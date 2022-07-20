@@ -1,0 +1,50 @@
+#font{
+    font-family: 'Lobster', cursive;
+}
+#fonts{
+    font-family: 'Open Sans', sans-serif;
+}
+#foo{
+    font-family: 'Libre Caslon Display', serif;
+    font-size: 10pt;
+}
+.pic1{
+    width: 30%;
+    height: 5vh;
+    transform: translate(5vh,-1.5vh);
+}
+.pic2{
+    width: 30%;
+    height: 11vh;
+    transform: translate(9vh,-4vh);
+}
+.pic3{
+    width: 15vw;
+}
+#pic4{
+    height: 90vh;
+    width: 85%;
+}
+#pic6{
+    width: 30%;
+    justify-content:center;
+}
+#pic5{
+    border: 1px solid green;
+}
+#list{
+    font-size: 17pt;
+}
+#slide{
+    justify-content: center;
+}
+#link{
+    text-decoration: none;
+}
+#set{
+    font-size: 20pt;
+}
+#edit{
+    height: 5vh;
+    padding: 0;
+}
