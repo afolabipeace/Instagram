@@ -7,7 +7,7 @@ import Login from './component/Login'
 import LandingPage from './pages/LandingPage';
 import Dashboard from './component/Dashboard';
 import Profile from './component/Profile';
-import Navbar from './component/Navbar';
+import Nevbar from './component/Nevbar';
 import Home from './component/Home';
 import Slideshow from './component/Slideshow';
 import EditProfile from './component/EditProfile';

@@ -4,7 +4,8 @@ const userSchema= mongoose.Schema({
     email: String,
     fullname:String,
     username:String,
-    password: String
+    password: String,
+    file: String
 })
 const saltRound = 10;
 userSchema.pre('save',function(next){
@@ -28,22 +29,5 @@ userSchema.methods.validatePassword=function(password,callback){
         }
     })
 }
-// const picSchema= mongoose.Schema({
-//     image : String,
-//     userId : String,
-//     created_at : String,
-//     username : String,
-//     fullname : String,
-//     caption : String,
-// })
-// const proSchema= mongoose.Schema({
-//     image : String,
-//     userId : String,
-//     created_at : String,
-//     username : String,
-//     fullname : String,
-// })
 const userModel = mongoose.model('user_tb',userSchema)
-// const picModel = mongoose.model('pic_tb',picSchema)
-// const proModel = mongoose.model('pro_tb',proSchema)
 module.exports = userModel

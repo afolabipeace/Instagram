@@ -14,7 +14,7 @@ const Signup = () => {
     const navigate = useNavigate()
     const [message, setmessage] = useState("")
   const [status, setstatus] = useState("")
-    const url = "http://localhost:4100/signup"
+    const url = "http://localhost:4200/signup"
     const formik = useFormik({
         initialValues: {
             email: '',

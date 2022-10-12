@@ -1,7 +1,10 @@
 const userModel = require("../models/user.model")
+const picModel = require("../models/user.model")
+const proModel = require("../models/user.model")
 const cloudinary=require("cloudinary")
 const SECRET = process.env.JWT_SECRET
 const jwt = require('jsonwebtoken')
+const { response } = require("express")
 cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.API_KEY,
@@ -31,6 +34,43 @@ const registerUser = (req,res)=>{
             })
         }
     })
+}
+const profile = (req,res) =>{
+    proModel.findOne(req.body,(err,res)=>{
+        if(err){
+            res.status(501).send({status:false, message:'Internal Server Error'});
+        }else{
+            if(result){
+                res.send({status:true, message: 'Success', image: response.image})
+            }
+        }
+    })
+}
+
+const setProfile = (req, res)=>{
+    const sent = req.body;
+    const file = req.body.myfile
+    const token = req.body.token
+    console.log(sent)
+    cloudinary.v2.uploader.upload(file,
+        {folder: 'Profile'},
+        (err,result)=>{
+            if(err){
+                console.log(err)
+                res.send({message: 'Upload failed'})
+            }else{
+                jwt.verify(token, SECRET, (err, userDetails)=>{
+                    userModel.updateMany({email:userDetails.email},{$set:{file:result.secure_url}},
+                        function(error,result1){
+                            if(error){
+                                console.log(error)
+                            }else{
+                                res.send({message: 'Upload successful', image:result.secure_url})
+                            }
+                        })
+                })
+            }
+        })
 }
 const login = (req,res)=>{
     const password =req.body.password
@@ -72,7 +112,7 @@ const dashboard =(req,res)=>{
                 if(error){
                     res.status(501).send({status:false,message:'Internal server error'})
                 }else{
-                    res.send({status:true,message:'still valid',userDetails})
+                    res.send({status:true, message:'still valid',userDetails:userDetails})
                     console.log(result.email)
                 }
             })
@@ -80,40 +120,61 @@ const dashboard =(req,res)=>{
     })
 }
 const uploadFile = (req,res)=>{
-    const sent =req.body;
-    const cap =req.body.caption;
-    const user =req.body.currentUser;
-    const file =req.body.myfile
-    cloudinary.v2.uploader.upload(file,{folder:'InstagramPost'},(err,result)=>{
+    console.log(req.body)
+    // const sent =req.body;
+    // const cap =req.body.caption;
+    // const user =req.body.currentUser;
+    // const file =req.body.myfile
+    // cloudinary.v2.uploader.upload(file,{folder:'InstagramPost'},(err,result)=>{
+    //     if(err){
+    //         console.log(err)
+    //         res.send({message:'upload failed'})
+    //     }else{
+    //         jwt.verify(req.body.token,SECRET,(err,userDetails)=>{
+    //             if(err){
+    //                 console.log(err)
+    //             }else{
+    //                 let email = userDetails.email
+    //                 var form = new picModel({
+    //                     created_at: new Date(),
+    //                     image: result.secure_url,
+    //                     userId:email,
+    //                     caption:cap,
+    //                     username: user
+    //                 });
+    //                 form.save((error,details)=>{
+    //                     if(error){
+    //                         console.log(error)
+    //                         console.log('error')
+    //                         res.send({message:'upload failed'})
+    //                     }else{
+    //                         res.send({message:'upload successful',image:result.secure_url})
+    //                         console.log(details)
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }
+    // }); 
+}
+const getAlluser = (req,res) =>{
+    userModel.find((err,result)=>{
         if(err){
             console.log(err)
-            res.send({message:'upload failed'})
+            res.send({status:false, message:'not found'})
         }else{
-            jwt.verify(req.body.token,SECRET,(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let email = userDetails.email
-                    var form = new picModel({
-                        created_at: new Date().getDate,
-                        image: result.secure_url,
-                        userId:email,
-                        caption:cap,
-                        username: user
-                    });
-                    form.save((error,details)=>{
-                        if(error){
-                            console.log(error)
-                            console.log('error')
-                            res.send({message:'upload failed'})
-                        }else{
-                            res.send({message:'upload successful',image:result.secure_url})
-                            console.log(details)
-                        }
-                    })
-                }
-            })
+            res.send({status:true, message:'found', AllUser: result})
         }
-    }); 
+    })
 }
-module.exports={getLandingPage,registerUser,login,dashboard,uploadFile}
+const getPost= (req,res)=>{
+    picModel.find((err,pic)=>{
+        if(err){
+            console.log(err)
+            res.status(501).send({status:false, message:'upload failed try again later'})
+        }else{
+            res.send({status:true, message:'still Valid', UserPic: pic})
+        }
+    })
+}
+module.exports={getLandingPage,registerUser,login,dashboard,uploadFile,getPost,getAlluser,setProfile,profile}

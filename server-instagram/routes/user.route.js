@@ -5,4 +5,8 @@ router.get("/",userController.getLandingPage)
 router.post("/signup",userController.registerUser)
 router.post("/login",userController.login)
 router.get("/dashboard",userController.dashboard)
+router.post("/upload",userController.uploadFile)
+router.get("/getimage",userController.dashboard)
+router.get("/getpost",userController.dashboard)
+router.get("/getalluser",userController.dashboard)
 module.exports=router 

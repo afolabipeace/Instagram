@@ -22,11 +22,11 @@ const Login = () => {
       axios.post(url, userDetails).then((res) => {
         console.log(res)
         setstatus(true)
+        alert(`hey`)
         if (res.data.status === true) {
           localStorage.token = res.data.token
           setmessage(res.data.message)
           navigate('/dashboard')
-          // alert(`hey`)
         }
       })
     },
